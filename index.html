@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>La Chérie — Bakery &amp; Café Francés, Medellín</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,600&family=Jost:wght@300;400;500;600&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f4ede0;
+    --paper:#fbf7ee;
+    --blush:#f4c9da;
+    --blush-deep:#eeb3cc;
+    --rose:#c8447f;
+    --rose-soft:#d6699a;
+    --plum:#5c2a49;
+    --plum-deep:#3c1c30;
+    --ink:#3a2a32;
+    --gold:#ac8a41;
+    --line: rgba(92,42,73,0.18);
+    --shadow: 0 18px 40px -18px rgba(60,28,48,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0; padding:0;
+    max-width:100%;
+    overflow-x:hidden;
+  }
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Jost', sans-serif;
+    font-weight:300;
+    width:100%;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    color:var(--plum);
+    margin:0;
+    letter-spacing:0.01em;
+  }
+  .script{
+    font-family:'Mrs Saint Delafield', cursive;
+    font-weight:400;
+    color:var(--rose);
+    line-height:1;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;}
+  img,svg{max-width:100%;display:block;}
+  .eyebrow{
+    font-family:'Jost',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.28em;
+    font-size:0.7rem;
+    color:var(--gold);
+    font-weight:500;
+  }
+  .wrap{max-width:1160px;margin:0 auto;padding:0 32px;width:100%;}
+  @media(max-width:640px){.wrap{padding:0 20px;}}
+
+  /* ---------- postmark signature element ---------- */
+  .postmark{ width:74px;height:74px; flex:none; position:relative; }
+  .postmark svg{width:100%;height:100%;display:block;}
+  .postmark .ring{fill:none;stroke:currentColor;stroke-width:1.1;}
+  .postmark .dash{fill:none;stroke:currentColor;stroke-width:1.1;stroke-dasharray:2.4 4;}
+  .postmark text{
+    font-family:'Fraunces',serif; font-size:6.4px; letter-spacing:2px;
+    fill:currentColor; text-transform:uppercase;
+  }
+
+  /* ================= GATE (fits one screen) ================= */
+  #gate{
+    height:100vh; height:100dvh;
+    width:100%;
+    overflow-y:auto;
+    background:
+      radial-gradient(ellipse at 20% 10%, var(--blush) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 90%, var(--blush-deep) 0%, transparent 50%),
+      var(--cream);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    position:relative;
+  }
+  #gate.hidden{ display:none; }
+  #gate::before, #gate::after{
+    content:''; position:absolute; width:150px; height:150px;
+    border:1px solid var(--gold); opacity:0.3; border-radius:50%; pointer-events:none;
+  }
+  #gate::before{ top:-60px; left:-60px; }
+  #gate::after{ bottom:-70px; right:-50px; }
+
+  .gate-inner{
+    display:flex; flex-direction:column; align-items:center;
+    width:100%;
+    padding:clamp(16px,4vh,44px) clamp(16px,5vw,24px);
+    gap:clamp(6px,1.6vh,14px);
+    margin:auto;
+  }
+  .gate-mark{ color:var(--plum); }
+  .gate-mark .postmark{ width:clamp(38px,7vh,58px); height:clamp(38px,7vh,58px); }
+  .gate-title{
+    font-size:clamp(1.9rem, 5.6vh, 3.6rem);
+    text-align:center;
+    color:var(--plum-deep);
+    line-height:1.05;
+  }
+  .gate-title em{font-style:italic; color:var(--rose);}
+  .gate-script{
+    font-size:clamp(1.1rem,3.6vh,1.9rem);
+  }
+  .gate-sub{
+    max-width:420px;
+    text-align:center;
+    font-size:clamp(0.78rem,1.9vh,0.95rem);
+    color:var(--ink);
+    opacity:0.72;
+    line-height:1.55;
+    margin:0 0 clamp(6px,1vh,10px);
+  }
+
+  .postcards{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:clamp(8px,2vh,18px);
+    width:min(92vw,540px);
+  }
+  .postcard{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:clamp(12px,2.4vh,20px) clamp(12px,2.4vw,18px) clamp(10px,2vh,16px);
+    text-align:left;
+    cursor:pointer;
+    position:relative;
+    box-shadow:0 10px 24px -16px rgba(60,28,48,0.4);
+    transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    display:flex; flex-direction:column; gap:clamp(4px,1vh,10px);
+    min-width:0;
+  }
+  .postcard:hover, .postcard:focus-visible{
+    transform:translateY(-4px) rotate(-0.4deg);
+    box-shadow:0 20px 34px -16px rgba(60,28,48,0.45);
+    border-color:var(--rose-soft);
+    outline:none;
+  }
+  .postcard .postmark{
+    width:clamp(26px,5.5vh,42px); height:clamp(26px,5.5vh,42px);
+    color:var(--rose); align-self:flex-end; margin-bottom:-4px;
+  }
+  .postcard .pc-label{
+    font-family:'Fraunces',serif; font-weight:600;
+    font-size:clamp(0.92rem,2.4vh,1.16rem);
+    color:var(--plum);
+    line-height:1.15;
+  }
+  .postcard .pc-sub{
+    font-size:clamp(0.66rem,1.5vh,0.76rem);
+    letter-spacing:0.02em;
+    color:var(--ink); opacity:0.6; font-style:italic;
+  }
+  .postcard .pc-stripe{
+    position:absolute; top:0; left:0; right:0; height:5px;
+    background:repeating-linear-gradient(-45deg, var(--rose) 0 6px, transparent 6px 12px, var(--plum) 12px 18px, transparent 18px 24px);
+    opacity:0.7; border-radius:4px 4px 0 0;
+  }
+
+  /* ================= APP (single-view pages) ================= */
+  #app{ display:none; width:100%; min-height:100vh; min-height:100dvh; flex-direction:column; }
+  #app.active{ display:flex; }
+
+  .view-header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(244,237,224,0.94);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .view-header .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 0; gap:14px; flex-wrap:wrap;
+  }
+  .home-btn{
+    display:flex; align-items:center; gap:8px;
+    font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--plum); background:none; border:1px solid var(--plum);
+    padding:9px 16px; border-radius:30px; cursor:pointer; transition:all .25s;
+    white-space:nowrap;
+  }
+  .home-btn:hover{ background:var(--plum); color:var(--paper); }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces',serif; font-weight:600; font-size:1.15rem; color:var(--plum-deep);
+    white-space:nowrap;
+  }
+  .brand .dot{color:var(--rose);}
+  .nav-links{display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end;}
+  .nav-links button.pill{
+    font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--plum); opacity:0.72; background:none; border:none; cursor:pointer;
+    padding:8px 10px; transition:opacity .2s;
+  }
+  .nav-links button.pill:hover{opacity:1;}
+  .nav-links button.pill.current{opacity:1; text-decoration:underline; text-underline-offset:4px;}
+  .nav-links a.ig{
+    opacity:1; border:1px solid var(--plum); padding:8px 15px; border-radius:30px;
+    font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; transition:all .25s;
+  }
+  .nav-links a.ig:hover{background:var(--plum); color:var(--paper);}
+
+  .view{ display:none; flex:1; width:100%; }
+  .view.active{ display:block; }
+
+  section{padding:64px 0;}
+  @media(max-width:640px){ section{padding:48px 0;} }
+
+  .section-head{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:24px;
+    margin-bottom:36px; flex-wrap:wrap;
+  }
+  .section-head .postmark{color:var(--rose); width:52px;height:52px;}
+  .section-head h2{font-size:clamp(1.9rem,4.4vw,2.7rem);}
+  .section-head p{max-width:360px; font-size:0.9rem; color:var(--ink); opacity:0.68; line-height:1.6;}
+
+  /* HISTORIA VIEW (hero + letter) */
+  #view-historia{background:var(--cream);}
+  .historia-hero{
+    padding:56px 0 24px;
+    background: radial-gradient(ellipse at 78% 15%, var(--blush) 0%, transparent 45%), var(--cream);
+  }
+  .historia-hero .wrap{display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;}
+  @media(max-width:860px){ .historia-hero .wrap{grid-template-columns:1fr;} .hero-art{order:-1;} }
+  .historia-hero h1{font-size:clamp(2.1rem,5vw,3.4rem); line-height:1.05;}
+  .historia-hero h1 .script{display:block; font-size:0.55em; margin-top:4px;}
+  .historia-hero p.lead{margin-top:18px; max-width:440px; font-size:0.98rem; line-height:1.7; color:var(--ink); opacity:0.82;}
+
+  .hero-art{position:relative; display:flex; align-items:center; justify-content:center;}
+  .oval-frame{
+    width:min(260px,80%); aspect-ratio:1/1.06; border-radius:50%;
+    background:var(--plum); display:flex; align-items:center; justify-content:center;
+    position:relative; box-shadow:var(--shadow);
+  }
+  .oval-frame::before{content:''; position:absolute; inset:14px; border:1px solid rgba(251,247,238,0.5); border-radius:50%;}
+  .oval-frame svg{width:60%; color:var(--blush);}
+  .oval-frame .stamp-corner{position:absolute; top:-14px; right:-10px; color:var(--rose); background:var(--paper); border-radius:50%; padding:4px; box-shadow:var(--shadow);}
+  .oval-frame .stamp-corner .postmark{width:44px;height:44px;}
+
+  #view-historia .letter-section{padding-top:8px;}
+  .letter{
+    background:var(--paper); color:var(--ink);
+    max-width:680px; margin:0 auto;
+    padding:clamp(28px,5vw,52px); border-radius:2px; position:relative;
+    box-shadow:0 24px 50px -20px rgba(60,28,48,0.35);
+  }
+  .letter .script{font-size:1.5rem; margin-bottom:2px;}
+  .letter p{font-size:0.96rem; line-height:1.8; margin:16px 0; color:var(--ink); opacity:0.85;}
+  .letter .sign{margin-top:22px; font-family:'Mrs Saint Delafield',cursive; font-size:1.6rem; color:var(--rose);}
+
+  /* MENU VIEW */
+  #view-menu{background:var(--cream);}
+  .tabs{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:36px;}
+  .tab{
+    font-size:0.72rem; letter-spacing:0.07em; text-transform:uppercase;
+    padding:9px 15px; border:1px solid var(--line); border-radius:30px; cursor:pointer;
+    background:var(--paper); color:var(--plum); transition:all .25s ease;
+  }
+  .tab:hover{border-color:var(--rose-soft);}
+  .tab.active{background:var(--plum); color:var(--paper); border-color:var(--plum);}
+
+  .menu-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  .item{ background:var(--paper); padding:22px 22px 20px; display:none; flex-direction:column; gap:8px; }
+  .item.show{display:flex;}
+  .item .row{display:flex; justify-content:space-between; align-items:baseline; gap:12px;}
+  .item h3{font-size:1.05rem; font-weight:500; line-height:1.25;}
+  .item .price{font-family:'Fraunces',serif; color:var(--rose); font-weight:600; font-size:0.95rem; white-space:nowrap;}
+  .item p{margin:0; font-size:0.84rem; line-height:1.6; color:var(--ink); opacity:0.68;}
+  .item .tag{font-size:0.66rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold);}
+  .item .addon{font-size:0.76rem; opacity:0.6; font-style:italic; margin-top:2px;}
+
+  .price-list{ background:var(--paper); border:1px solid var(--line); padding:22px 24px; display:none; flex-direction:column; gap:2px; }
+  .price-list.show{display:flex;}
+  .price-list h3{font-size:1rem; margin-bottom:8px; color:var(--rose);}
+  .price-list .line{display:flex; justify-content:space-between; gap:10px; font-size:0.85rem; padding:6px 0; border-bottom:1px dashed var(--line); opacity:0.85;}
+  .price-list .line:last-child{border-bottom:none;}
+
+  /* UBICACION VIEW */
+  #view-ubicacion{background:var(--blush);}
+  .loc-grid{display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:stretch;}
+  @media(max-width:820px){.loc-grid{grid-template-columns:1fr;}}
+  .loc-card{background:var(--paper); padding:clamp(24px,4vw,40px); border-radius:2px; box-shadow:var(--shadow);}
+  .loc-card .postmark{color:var(--rose); width:48px;height:48px; margin-bottom:14px;}
+  .loc-card h3{font-size:1.35rem; margin-bottom:14px;}
+  .loc-line{display:flex; gap:12px; margin-bottom:14px; font-size:0.9rem; line-height:1.6; flex-wrap:wrap;}
+  .loc-line b{color:var(--plum); font-weight:500; min-width:82px; display:inline-block;}
+  .map-frame{border-radius:2px; overflow:hidden; box-shadow:var(--shadow); min-height:300px; width:100%;}
+  .map-frame iframe{width:100%; height:100%; min-height:300px; border:0; display:block;}
+
+  .btn{
+    font-family:'Jost',sans-serif; font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase;
+    padding:13px 24px; border-radius:2px; cursor:pointer; border:1px solid var(--plum);
+    display:inline-block; transition:all .3s ease;
+  }
+  .btn.primary{background:var(--plum); color:var(--paper);}
+  .btn.primary:hover{background:var(--plum-deep);}
+
+  ::selection{background:var(--rose); color:var(--paper);}
+
+  @media(max-height:640px){
+    .gate-sub{display:none;}
+    .gate-mark{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= GATE (single screen) ================= -->
+<div id="gate">
+  <div class="gate-inner">
+    <div class="gate-mark postmark">
+      <svg viewBox="0 0 74 74">
+        <circle class="ring" cx="37" cy="37" r="34"/>
+        <circle class="dash" cx="37" cy="37" r="27"/>
+        <text x="37" y="16" text-anchor="middle">La Chérie</text>
+        <text x="37" y="62" text-anchor="middle">Medellín</text>
+      </svg>
+    </div>
+    <h1 class="gate-title">la <em>Chérie</em></h1>
+    <div class="gate-script script">bonjour, chéri(e)</div>
+    <p class="gate-sub">Un rinconcito francés en Medellín. Dinos a dónde quieres viajar hoy — nosotros ponemos el café.</p>
+
+    <div class="postcards">
+      <div class="postcard" tabindex="0" role="button" data-action="view" data-view="menu">
+        <div class="pc-stripe"></div>
+        <div class="postmark"><svg viewBox="0 0 74 74"><circle class="ring" cx="37" cy="37" r="30"/><circle class="dash" cx="37" cy="37" r="22"/></svg></div>
+        <div class="pc-label">Ver el Menú</div>
+        <div class="pc-sub">Découvrez nos délices</div>
+      </div>
+      <div class="postcard" tabindex="0" role="button" data-action="view" data-view="historia">
+        <div class="pc-stripe"></div>
+        <div class="postmark"><svg viewBox="0 0 74 74"><circle class="ring" cx="37" cy="37" r="30"/><circle class="dash" cx="37" cy="37" r="22"/></svg></div>
+        <div class="pc-label">Nuestra Historia</div>
+        <div class="pc-sub">Bonjour, chéri(e)</div>
+      </div>
+      <div class="postcard" tabindex="0" role="button" data-action="view" data-view="ubicacion">
+        <div class="pc-stripe"></div>
+        <div class="postmark"><svg viewBox="0 0 74 74"><circle class="ring" cx="37" cy="37" r="30"/><circle class="dash" cx="37" cy="37" r="22"/></svg></div>
+        <div class="pc-label">Cómo Llegar</div>
+        <div class="pc-sub">CC Santafé, Medellín</div>
+      </div>
+      <div class="postcard" tabindex="0" role="button" data-action="external" data-href="https://www.instagram.com/lacherie.cafe/">
+        <div class="pc-stripe"></div>
+        <div class="postmark"><svg viewBox="0 0 74 74"><circle class="ring" cx="37" cy="37" r="30"/><circle class="dash" cx="37" cy="37" r="22"/></svg></div>
+        <div class="pc-label">Síguenos</div>
+        <div class="pc-sub">@lacherie.cafe</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= APP (one view visible at a time) ================= -->
+<div id="app">
+  <header class="view-header">
+    <div class="wrap nav">
+      <button class="home-btn" data-action="home">← Volver al inicio</button>
+      <div class="nav-links">
+        <button class="pill" data-action="view" data-view="historia">Historia</button>
+        <button class="pill" data-action="view" data-view="menu">Menú</button>
+        <button class="pill" data-action="view" data-view="ubicacion">Ubicación</button>
+        <a class="ig" href="https://www.instagram.com/lacherie.cafe/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HISTORIA -->
+  <section class="view" id="view-historia">
+    <div class="historia-hero">
+      <div class="wrap">
+        <div>
+          <div class="eyebrow">Bakery · Café · Brunch</div>
+          <h1>La vida <em>sabe</em> mejor<span class="script">en francés</span></h1>
+          <p class="lead">Repostería francesa hecha con calma, croissants recién horneados y un brunch que te transporta al corazón de París — sin salir de Medellín.</p>
+        </div>
+        <div class="hero-art">
+          <div class="oval-frame">
+            <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.3">
+              <path d="M20 62c6-22 14-30 30-30s24 8 30 30" />
+              <path d="M28 40c4-3 44-3 48 0" />
+              <ellipse cx="50" cy="66" rx="30" ry="6"/>
+              <path d="M50 30v-8M46 24c0-4 2-6 4-6s4 2 4 6"/>
+            </svg>
+            <div class="stamp-corner postmark">
+              <svg viewBox="0 0 74 74"><circle class="ring" cx="37" cy="37" r="30"/><circle class="dash" cx="37" cy="37" r="22"/><text x="37" y="17" text-anchor="middle">Paris</text><text x="37" y="61" text-anchor="middle">1899</text></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wrap letter-section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Notre Histoire</div>
+          <h2>Nuestra historia</h2>
+        </div>
+        <div class="postmark"><svg viewBox="0 0 74 74"><circle class="ring" cx="37" cy="37" r="30"/><circle class="dash" cx="37" cy="37" r="22"/></svg></div>
+      </div>
+      <div class="letter">
+        <div class="script">Bonjour, chéri(e)</div>
+        <p>Somos La Chérie, y qué alegría tenerte aquí. Creemos que la repostería no es solo sabor: es un arte que despierta los sentidos, evoca recuerdos y convierte lo cotidiano en un momento especial.</p>
+        <p>Cada receta nace del respeto por la tradición, del cuidado por los detalles y de ese deseo de compartir algo hecho con calma y con intención.</p>
+        <p>Este menú es una invitación a disfrutar sin prisa: a dejarte sorprender por aromas, texturas y pequeños gestos que cuentan historias; a celebrar lo simple, a regalarte un antojo bonito, y a viajar —aunque sea por un instante— al corazón de Francia, desde nuestra mesa.</p>
+        <div class="sign">Con amor, La Chérie</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section class="view" id="view-menu">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Notre Carte</div>
+          <h2>El Menú</h2>
+          <p style="margin-top:8px;">Del brunch a la medianoche — todo lo que preparamos, con precios en COP.</p>
+        </div>
+        <div class="postmark"><svg viewBox="0 0 74 74"><circle class="ring" cx="37" cy="37" r="30"/><circle class="dash" cx="37" cy="37" r="22"/></svg></div>
+      </div>
+
+      <div class="tabs" id="tabs">
+        <div class="tab active" data-cat="brunch">All Day Brunch</div>
+        <div class="tab" data-cat="rose">La Vie en Rose</div>
+        <div class="tab" data-cat="sandwiches">Sándwiches</div>
+        <div class="tab" data-cat="compartir">Pour Partager</div>
+        <div class="tab" data-cat="plato">Arma tu Plato</div>
+        <div class="tab" data-cat="postres">Tea Time</div>
+        <div class="tab" data-cat="bebidas">Bebidas</div>
+        <div class="tab" data-cat="bar">Bar</div>
+      </div>
+
+      <div class="menu-grid" data-panel="brunch">
+        <div class="item show">
+          <div class="row"><h3>French Omelette</h3><span class="price">$ 20.800</span></div>
+          <p>Elige un acompañante: pan de masa madre, croissant de mantequilla o pan brioche.</p>
+          <div class="addon">Adiciones desde $2.000 — jamones, quesos, vegetales y champiñones.</div>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Crepes Suzette</h3><span class="price">$ 37.000</span></div>
+          <p>Caramelizadas en reducción de naranja y grand marnier, con helado de vainilla.</p>
+          <div class="addon">Adición de helado + $6.500</div>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Bowl de Yogurt Griego</h3><span class="price">$ 35.500</span></div>
+          <p>Base de yogurt con frutas de temporada, granola hecha en casa y miel de frutos rojos.</p>
+          <div class="addon">Crema de almendras o maní + $5.500 – $6.500</div>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Croque Monsieur</h3><span class="price">$ 38.000</span></div>
+          <p>Pan brioche, jamón york y queso emmental gratinado, con ensalada fresca.</p>
+          <div class="addon">Variación de jamón de pavo disponible.</div>
+        </div>
+      </div>
+
+      <div class="menu-grid" data-panel="rose">
+        <div class="item show">
+          <div class="row"><h3>Huevos Benedictinos</h3><span class="price">$ 34.200</span></div>
+          <p>Huevos poché sobre pan brioche, con tocineta y espárragos, bañados en salsa holandesa.</p>
+          <div class="addon">Adición de salmón ahumado + $10.500</div>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Quiché Lorraine</h3><span class="price">$ 39.000</span></div>
+          <p>Tartaleta rellena de un cremoso de huevos, panceta ahumada y queso gruyère.</p>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Tostada Francesa</h3><span class="price">$ 38.000</span></div>
+          <p>Pan brioche embebido y caramelizado con mantequilla y miel, con frutos rojos y salsa de yogurt griego.</p>
+        </div>
+      </div>
+
+      <div class="menu-grid" data-panel="sandwiches">
+        <div class="item show">
+          <div class="row"><h3>Club La Chérie</h3><span class="price">$ 49.000</span></div>
+          <p>Pechuga de pollo, jamón york, tocineta y queso emmental. Con papas chips.</p>
+          <div class="addon">Variación de jamón de pavo disponible.</div>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Roastbeef Sándwich</h3><span class="price">$ 41.000</span></div>
+          <p>Pan de masa madre, queso emmental y mayonesa de trufa. Con papas chips.</p>
+        </div>
+      </div>
+
+      <div class="menu-grid" data-panel="compartir">
+        <div class="item show">
+          <div class="row"><h3>Burrata Trufada</h3><span class="price">$ 40.000</span></div>
+          <p>Con miel de trufa y pistachos. Acompañada de tostadas de masa madre.</p>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Burrata Provenzal</h3><span class="price">$ 45.000</span></div>
+          <p>Con pesto de albahaca, tomates confitados y jamón serrano.</p>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Chips Trufadas</h3><span class="price">$ 17.200</span></div>
+          <p>Papas crocantes con mayonesa de trufa y queso grana padano.</p>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Camembert al Horno</h3><span class="price">$ 65.000</span></div>
+          <p>Envuelto en hojaldre, fundido con miel especiada y nueces crocantes. Con pan de masa madre.</p>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Selección de Quesos</h3><span class="price">$ 76.500</span></div>
+          <p>Para 2–3 personas. Con uvas frescas, mermelada de frutos rojos y reducción de balsámico.</p>
+          <div class="addon">+ Jamón serrano $11.500 · Tostadas de masa madre $4.200</div>
+        </div>
+      </div>
+
+      <div class="menu-grid" data-panel="plato">
+        <div class="item show">
+          <div class="row"><h3>César La Chérie</h3><span class="price">$ 18.000</span></div>
+          <p>Lechuga romana, kale, crutones, queso grana padano y aderezo césar.</p>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Ensalada Waldorf</h3><span class="price">$ 20.000</span></div>
+          <p>Kale, manzana y uvas verdes, nueces y aderezo de yogurt.</p>
+        </div>
+        <div class="price-list show">
+          <h3>Adiciones (proteínas)</h3>
+          <div class="line"><span>Salmón al horno</span><span>$ 25.200</span></div>
+          <div class="line"><span>Salmón ahumado</span><span>$ 10.500</span></div>
+          <div class="line"><span>Pechuga de pollo</span><span>$ 17.200</span></div>
+          <div class="line"><span>Roastbeef</span><span>$ 15.500</span></div>
+          <div class="line"><span>Jamón de pavo</span><span>$ 8.000</span></div>
+        </div>
+        <div class="price-list show">
+          <h3>Acompañantes</h3>
+          <div class="line"><span>Papas chips</span><span>$ 5.000</span></div>
+          <div class="line"><span>Papas al horno</span><span>$ 4.200</span></div>
+          <div class="line"><span>Pan de masa madre</span><span>$ 4.200</span></div>
+          <div class="line"><span>Pasta al pesto</span><span>$ 13.500</span></div>
+        </div>
+      </div>
+
+      <div class="menu-grid" data-panel="postres">
+        <div class="item show">
+          <div class="row"><h3>Profiterol "al Plato"</h3><span class="price">$ 18.000</span></div>
+          <p>Relleno de helado de vainilla, con crema pastelera y glaseado de chocolate.</p>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Magdalena de Proust</h3><span class="price">$ 16.200</span></div>
+          <p>Madeleine suave con mousse de chai y té negro, con helado de vainilla.</p>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Flan Parisien</h3><span class="price">$ 26.000</span></div>
+          <p>Clásico, cremoso, con helado de vainilla sobre jalea de frutos rojos sin azúcar.</p>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Cocotte au Chocolat</h3><span class="price">$ 24.000</span></div>
+          <p>Galleta con chunks de chocolate, suave por dentro. Con helado de vainilla.</p>
+          <div class="tag">10 minutos</div>
+        </div>
+        <div class="item show">
+          <div class="row"><h3>Cocotte Blanche</h3><span class="price">$ 25.000</span></div>
+          <p>Galleta de macadamia y chocolate blanco. Con helado de vainilla.</p>
+          <div class="tag">10 minutos</div>
+        </div>
+      </div>
+
+      <div class="menu-grid" data-panel="bebidas">
+        <div class="price-list show">
+          <h3>Café</h3>
+          <div class="line"><span>Americano</span><span>$ 7.800</span></div>
+          <div class="line"><span>Espresso</span><span>$ 5.000</span></div>
+          <div class="line"><span>Espresso doble</span><span>$ 7.400</span></div>
+          <div class="line"><span>Capuchino</span><span>$ 9.500</span></div>
+          <div class="line"><span>Latte</span><span>$ 8.500</span></div>
+          <div class="line"><span>Cold brew</span><span>$ 13.200</span></div>
+          <div class="line"><span>Cold brew orange</span><span>$ 14.500</span></div>
+          <div class="line"><span>Cold brew tonic</span><span>$ 22.500</span></div>
+          <div class="line"><span>Adición leche de almendras</span><span>+ $1.500</span></div>
+        </div>
+        <div class="price-list show">
+          <h3>Matcha &amp; Chai</h3>
+          <div class="line"><span>Matcha latte frío</span><span>$ 17.200</span></div>
+          <div class="line"><span>Matcha latte caliente</span><span>$ 17.500</span></div>
+          <div class="line"><span>Chai latte caliente</span><span>$ 15.500</span></div>
+          <div class="line"><span>Chai latte frío</span><span>$ 16.000</span></div>
+        </div>
+        <div class="price-list show">
+          <h3>Chocolate &amp; Soda</h3>
+          <div class="line"><span>Chocolate parisino</span><span>$ 18.000</span></div>
+          <div class="line"><span>Chocolate en agua</span><span>$ 12.000</span></div>
+          <div class="line"><span>Soda fresa</span><span>$ 15.000</span></div>
+          <div class="line"><span>Soda romero</span><span>$ 17.200</span></div>
+          <div class="line"><span>Soda flor de jamaica</span><span>$ 13.000</span></div>
+        </div>
+        <div class="price-list show">
+          <h3>Jugos &amp; Agua</h3>
+          <div class="line"><span>Jugo de fresa</span><span>$ 12.000</span></div>
+          <div class="line"><span>Jugo de naranja</span><span>$ 11.000</span></div>
+          <div class="line"><span>Jugo de mandarina</span><span>$ 13.500</span></div>
+          <div class="line"><span>Agua San Pellegrino</span><span>$ 17.000</span></div>
+        </div>
+      </div>
+
+      <div class="menu-grid" data-panel="bar">
+        <div class="price-list show">
+          <h3>Cócteles</h3>
+          <div class="line"><span>Aperol spritz</span><span>$ 33.500</span></div>
+          <div class="line"><span>Negroni</span><span>$ 42.000</span></div>
+          <div class="line"><span>Gin &amp; Tonic Hendricks</span><span>$ 58.000</span></div>
+          <div class="line"><span>Margarita</span><span>$ 30.000</span></div>
+          <div class="line"><span>Lychee martini</span><span>$ 37.500</span></div>
+          <div class="line"><span>Mimosa tradicional</span><span>$ 19.500</span></div>
+          <div class="line"><span>Mimosa de la casa</span><span>$ 22.000</span></div>
+        </div>
+        <div class="price-list show">
+          <h3>Vino</h3>
+          <div class="line"><span>Copa Albariño</span><span>$ 30.000</span></div>
+          <div class="line"><span>Copa Duca Chardonnay</span><span>$ 31.200</span></div>
+          <div class="line"><span>Copa Duca Sirpasso (tinto)</span><span>$ 35.000</span></div>
+          <div class="line"><span>Botella Cava rosado AA Mirgin</span><span>$ 178.000</span></div>
+        </div>
+        <div class="price-list show">
+          <h3>Licores</h3>
+          <div class="line"><span>Shot tequila</span><span>$ 10.000</span></div>
+          <div class="line"><span>Shot whiskey</span><span>$ 17.500</span></div>
+          <div class="line"><span>Shot ginebra Hendricks</span><span>$ 17.000</span></div>
+          <div class="line"><span>Botella Buchanas deluxe</span><span>$ 320.000</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- UBICACION -->
+  <section class="view" id="view-ubicacion">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow" style="color:var(--plum)">Nous Trouver</div>
+          <h2>Cómo llegar</h2>
+        </div>
+        <div class="postmark"><svg viewBox="0 0 74 74"><circle class="ring" cx="37" cy="37" r="30"/><circle class="dash" cx="37" cy="37" r="22"/></svg></div>
+      </div>
+      <div class="loc-grid">
+        <div class="loc-card">
+          <div class="postmark"><svg viewBox="0 0 74 74"><circle class="ring" cx="37" cy="37" r="30"/><circle class="dash" cx="37" cy="37" r="22"/></svg></div>
+          <h3>La Chérie · CC Santafé</h3>
+          <div class="loc-line"><b>Dirección</b><span>Cl. 9 Sur # 42A-100, Plazoleta Aguacatala, CC Santafé, Medellín</span></div>
+          <div class="loc-line"><b>Horario</b><span>Lunes a sábado: 8:30 am – 8:00 pm<br>Domingos y festivos: 10:00 am – 7:00 pm</span></div>
+          <div class="loc-line"><b>Instagram</b><span><a href="https://www.instagram.com/lacherie.cafe/" target="_blank" rel="noopener">@lacherie.cafe</a></span></div>
+          <a class="btn primary" style="margin-top:10px;" href="https://www.google.com/maps/search/?api=1&query=La+Cherie+Bakery+CC+Santafe+Medellin" target="_blank" rel="noopener">Abrir en Google Maps</a>
+        </div>
+        <div class="map-frame">
+          <iframe src="https://www.google.com/maps?q=Centro%20Comercial%20Santaf%C3%A9%20Medell%C3%ADn%2C%20Plazoleta%20Aguacatala&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const gate = document.getElementById('gate');
+  const app = document.getElementById('app');
+  const views = document.querySelectorAll('.view');
+  const navPills = document.querySelectorAll('.nav-links button.pill');
+
+  function showView(name){
+    gate.classList.add('hidden');
+    app.classList.add('active');
+    views.forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
+    navPills.forEach(p => p.classList.toggle('current', p.getAttribute('data-view') === name));
+    window.scrollTo(0,0);
+  }
+
+  function goHome(){
+    app.classList.remove('active');
+    gate.classList.remove('hidden');
+    window.scrollTo(0,0);
+  }
+
+  document.querySelectorAll('[data-action]').forEach(el=>{
+    el.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const action = el.getAttribute('data-action');
+      if(action === 'view'){
+        showView(el.getAttribute('data-view'));
+      } else if(action === 'home'){
+        goHome();
+      } else if(action === 'external'){
+        window.open(el.getAttribute('data-href'), '_blank', 'noopener');
+      }
+    });
+    el.addEventListener('keypress', (e)=>{ if(e.key === 'Enter') el.click(); });
+  });
+
+  /* Menu tabs */
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('[data-panel]');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const cat = tab.getAttribute('data-cat');
+      panels.forEach(p=>{ p.style.display = (p.getAttribute('data-panel') === cat) ? '' : 'none'; });
+    });
+  });
+  panels.forEach(p=>{ p.style.display = (p.getAttribute('data-panel') === 'brunch') ? '' : 'none'; });
+</script>
+</body>
+</html>
